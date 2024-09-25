@@ -1,147 +1,157 @@
 "use client"
 import React, { useState } from 'react';
 
-const Step1 = ({ formData, setFormData, errors }) => (
-  <div>
-    <h2 className="text-2xl font-semibold mb-4">Step 1: Personal Info</h2>
-    <div className="mb-4">
-      <label className="block text-sm font-medium">First Name</label>
-      <input
-        className={`mt-1 block w-full p-2 border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-        type="text"
-        value={formData.firstName}
-        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-      />
-      {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
-    </div>
-    <div className="mb-4">
-      <label className="block text-sm font-medium">Last Name</label>
-      <input
-        className={`mt-1 block w-full p-2 border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-        type="text"
-        value={formData.lastName}
-        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-      />
-      {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
-    </div>
-  </div>
-);
+const Step1 = ({ formData, setFormData, validationErrors, setValidationErrors }) => {
 
-const Step2 = ({ formData, setFormData, errors }) => (
-  <div>
-    <h2 className="text-2xl font-semibold mb-4">Step 2: Address Info</h2>
-    <div className="mb-4">
-      <label className="block text-sm font-medium">Address</label>
-      <input
-        className={`mt-1 block w-full p-2 border ${errors.address ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-        type="text"
-        value={formData.address}
-        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-      />
-      {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
-    </div>
-    <div className="mb-4">
-      <label className="block text-sm font-medium">City</label>
-      <input
-        className={`mt-1 block w-full p-2 border ${errors.city ? 'border-red-500' : 'border-gray-300'} rounded-md`}
-        type="text"
-        value={formData.city}
-        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-      />
-      {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
-    </div>
-  </div>
-);
+  const handleBudgetSelection = (budget) => {
+    setFormData({ ...formData, budget });
+    setValidationErrors({ ...validationErrors, budget: '' });
+  };
 
-const Step3 = ({ formData }) => (
-  <div>
-    <h2 className="text-2xl font-semibold mb-4">Step 3: Review Info</h2>
-    <div className="mb-4">
-      <p><strong>First Name:</strong> {formData.firstName}</p>
-      <p><strong>Last Name:</strong> {formData.lastName}</p>
-      <p><strong>Address:</strong> {formData.address}</p>
-      <p><strong>City:</strong> {formData.city}</p>
+  return (
+    <div className="text-center">
+      <h2 className="text-3xl font-semibold mb-4">Step #1</h2>
+      <p className="text-3xl font-bold mb-6">What is your monthly digital marketing budget?</p>
+      <div className="space-y-4">
+        {["< $1,000/mo", "$1,000 - $2,000", "$2,000 - $5,000", "$5,000 - $10,000", "$10,000 - $25,000", "$25,000 +"].map((budget) => (
+          <button
+            key={budget}
+            onClick={() => handleBudgetSelection(budget)}
+            className={`block w-full bg-white py-3 rounded-md border border-gray-300 ${
+              formData.budget === budget ? 'border-green-500 bg-green-50' : ''
+            }`}
+          >
+            {budget}
+          </button>
+        ))}
+        {validationErrors.budget && <p className="text-red-500 text-sm mt-2">{validationErrors.budget}</p>}
+      </div>
     </div>
-    <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">Submit</button>
-  </div>
-);
+  );
+};
+
+const Step2 = ({ formData, setFormData, validationErrors }) => {
+
+  return (
+    <div className="text-center">
+      <h2 className="text-3xl font-semibold mb-4">Step #2</h2>
+      <p className="text-3xl font-bold mb-4">Details</p>
+      <p className='text-xl font-normal text-gray-400 mb-4'>We're thrilled at the opportunity to help you grow your business online.</p>
+      <form className="space-y-4">
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          className="w-full p-3 rounded-md border border-gray-300"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        />
+        
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          className="w-full p-3 rounded-md border border-gray-300"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        />
+        
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone Number"
+          className="w-full p-3 rounded-md border border-gray-300"
+          value={formData.phone}
+          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+        />
+        
+        <textarea
+          name="details"
+          placeholder="Anything else you’d like to share?"
+          className="w-full p-3 rounded-md border border-gray-300"
+          rows={4}
+          value={formData.details}
+          onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+        />
+      </form>
+      {validationErrors.step2 && <p className="text-red-500 text-sm mt-2">{validationErrors.step2}</p>}
+    </div>
+  );
+};
+
+const Step3 = () => {
+    
+    return (
+    <div className="text-center">
+      <h2 className="text-2xl font-semibold mb-4">Your Request for a Proposal Has Been Submitted!</h2>
+      <p className="text-gray-500 mb-4">Lorem ipsum dolor sit amet consectetur. Tincidunt ultricies gravida.</p>
+      <button className="bg-green-500 text-white py-2 px-4 rounded-md">Return Home</button>
+    </div>
+  );
+};
 
 const StepperForm = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    address: '',
-    city: '',
+    budget: '',
+    name: '',
+    email: '',
+    phone: '',
+    details: '',
   });
-  const [errors, setErrors] = useState({});
 
-  const validateStep1 = () => {
-    const newErrors = {};
-    if (!formData.firstName) newErrors.firstName = 'First name is required';
-    if (!formData.lastName) newErrors.lastName = 'Last name is required';
-    return newErrors;
-  };
-
-  const validateStep2 = () => {
-    const newErrors = {};
-    if (!formData.address) newErrors.address = 'Address is required';
-    if (!formData.city) newErrors.city = 'City is required';
-    return newErrors;
-  };
+  const [validationErrors, setValidationErrors] = useState({});
 
   const handleNext = () => {
-    let newErrors = {};
-    if (step === 1) {
-      newErrors = validateStep1();
-    } else if (step === 2) {
-      newErrors = validateStep2();
-    }
-
-    if (Object.keys(newErrors).length === 0) {
+    if (validateStep()) {
       setStep(step + 1);
-    } else {
-      setErrors(newErrors);
     }
   };
 
-  const handleBack = () => {
-    setStep(step - 1);
-    setErrors({});
-  };
+  const handleBack = () => setStep(step - 1);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
+  const validateStep = () => {
+    let errors = {};
+
+    if (step === 1 && !formData.budget) {
+      errors.budget = "Please select a budget.";
+    }
+
+    if (step === 2) {
+      if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
+        errors.step2 = "Please fill all the remaining fields.";
+      }
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4 shadow-lg rounded-md bg-white">
-      {step === 1 && <Step1 formData={formData} setFormData={setFormData} errors={errors} />}
-      {step === 2 && <Step2 formData={formData} setFormData={setFormData} errors={errors} />}
-      {step === 3 && <Step3 formData={formData} />}
+    <div className="max-w-lg mx-auto bg-white p-6 rounded-md shadow-lg">
+      <div className="border-b border-gray-200 mb-6">
+        <div className="w-full bg-gray-200 h-2 mb-4">
+          <div className={`h-full bg-green-500`} style={{ width: `${(step / 3) * 100}%` }}></div>
+        </div>
+      </div>
 
-      <div className="flex justify-between mt-4">
+      {step === 1 && <Step1 formData={formData} setFormData={setFormData} validationErrors={validationErrors} setValidationErrors={setValidationErrors} />}
+      {step === 2 && <Step2 formData={formData} setFormData={setFormData} validationErrors={validationErrors} />}
+      {step === 3 && <Step3 />}
+
+      <div className="mt-6 flex justify-between">
         {step > 1 && (
-          <button
-            type="button"
-            className="bg-gray-500 text-white px-4 py-2 rounded-md"
-            onClick={handleBack}
-          >
-            Back
+          <button onClick={handleBack} className="text-gray-700 hover:text-gray-900">
+            Go Back
           </button>
         )}
         {step < 3 && (
-          <button
-            type="button"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
-            onClick={handleNext}
-          >
-            Next
+          <button onClick={handleNext} className="bg-green-500 text-white py-2 px-4 rounded-md">
+            { step == 2 ? "Submit Request" : "Next" }
           </button>
         )}
       </div>
-    </form>
+    </div>
   );
 };
 
