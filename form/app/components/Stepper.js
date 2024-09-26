@@ -140,7 +140,11 @@ const StepperForm = () => {
       {step === 3 && <Step3 />}
       <div className="mt-6 flex justify-center items-center">
         {step < 3 && (
-          <button onClick={handleNext} className="bg-green-500 text-white py-2 px-4 rounded-md">
+          <button onClick={() => {
+            handleNext();
+            console.log(formData);
+          }}
+           className="bg-green-500 text-white py-2 px-4 rounded-md">
             {step === 2 ? "Submit Request" : "Next"}
           </button>
         )}
